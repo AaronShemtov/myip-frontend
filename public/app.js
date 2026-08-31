@@ -21,8 +21,8 @@ const getAddress = async (version) => {
 };
 
 const setProtocol = (version, value, available) => {
-  $(`ipv${version}`).textContent = available ? value : 'Недоступен';
-  $(`ipv${version}-state`).textContent = available ? 'Доступен' : `IPv${version} не обнаружен`;
+  $(`ipv${version}`).textContent = available ? value : 'Unavailable';
+  $(`ipv${version}-state`).textContent = available ? 'Available' : `IPv${version} not detected`;
   document.querySelector(`[data-copy="ipv${version}"]`).hidden = !available;
 };
 
@@ -30,11 +30,11 @@ const countryFlag = (code = '') => code.toUpperCase().replace(/./g, c => String.
 
 async function checkIP() {
   checkButton.disabled = true;
-  checkButton.textContent = 'Проверяем…';
-  status.textContent = 'Определяем доступные протоколы…';
+  checkButton.textContent = 'Checking…';
+  status.textContent = 'Detecting available protocols…';
   results.hidden = false;
   setProtocol(4, '', false); setProtocol(6, '', false);
-  $('ipv4').textContent = $('ipv6').textContent = 'Проверяем…';
+  $('ipv4').textContent = $('ipv6').textContent = 'Checking…';
 
   const [v4, v6] = await Promise.allSettled([getAddress(4), getAddress(6)]);
   const ipv4 = v4.status === 'fulfilled' ? v4.value : null;
@@ -44,18 +44,18 @@ async function checkIP() {
   const primary = ipv4 || ipv6;
 
   if (!primary) {
-    $('primary-ip').textContent = 'Не удалось определить';
-    status.textContent = 'Сервисы проверки недоступны. Попробуйте ещё раз.';
-    checkButton.disabled = false; checkButton.textContent = 'Повторить проверку';
+    $('primary-ip').textContent = 'Could not detect';
+    status.textContent = 'The check services are unavailable. Please try again.';
+    checkButton.disabled = false; checkButton.textContent = 'Try again';
     return;
   }
 
   $('primary-ip').textContent = primary;
-  status.textContent = 'Определяем примерное местоположение…';
+  status.textContent = 'Finding your approximate location…';
   try {
     const geo = await fetchJSON(`https://ipwho.is/${encodeURIComponent(primary)}`);
     if (geo.success === false) throw new Error(geo.message || 'Lookup failed');
-    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Не определено';
+    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Unknown';
     $('country').textContent = geo.country || '—';
     $('region').textContent = geo.region || '—';
     $('city').textContent = geo.city || '—';
@@ -63,20 +63,20 @@ async function checkIP() {
     $('asn').textContent = geo.connection?.asn ? `AS${geo.connection.asn}` : '—';
     $('timezone').textContent = geo.timezone?.id || '—';
     $('flag').textContent = countryFlag(geo.country_code);
-    status.textContent = 'Проверка завершена.';
+    status.textContent = 'Check complete.';
   } catch {
-    status.textContent = 'IP определён, но геолокация сейчас недоступна.';
+    status.textContent = 'Your IP was detected, but location data is currently unavailable.';
   }
   checkButton.disabled = false;
-  checkButton.textContent = 'Проверить ещё раз';
+  checkButton.textContent = 'Check again';
 }
 
 checkButton.addEventListener('click', checkIP);
 document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
   const value = $(button.dataset.copy).textContent;
-  try { await navigator.clipboard.writeText(value); button.textContent = 'Скопировано'; }
-  catch { button.textContent = 'Не удалось'; }
-  setTimeout(() => { button.textContent = 'Копировать'; }, 1500);
+  try { await navigator.clipboard.writeText(value); button.textContent = 'Copied'; }
+  catch { button.textContent = 'Failed'; }
+  setTimeout(() => { button.textContent = 'Copy'; }, 1500);
 }));
 
 const preferred = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
