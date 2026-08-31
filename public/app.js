@@ -1,0 +1,88 @@
+const $ = (id) => document.getElementById(id);
+const checkButton = $('check');
+const status = $('status');
+const results = $('results');
+
+const fetchJSON = async (url, timeout = 7000) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally { clearTimeout(timer); }
+};
+
+const getAddress = async (version) => {
+  const host = version === 4 ? 'api4.ipify.org' : 'api6.ipify.org';
+  const data = await fetchJSON(`https://${host}?format=json`);
+  if (!data.ip) throw new Error('IP not returned');
+  return data.ip;
+};
+
+const setProtocol = (version, value, available) => {
+  $(`ipv${version}`).textContent = available ? value : 'Недоступен';
+  $(`ipv${version}-state`).textContent = available ? 'Доступен' : `IPv${version} не обнаружен`;
+  document.querySelector(`[data-copy="ipv${version}"]`).hidden = !available;
+};
+
+const countryFlag = (code = '') => code.toUpperCase().replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
+
+async function checkIP() {
+  checkButton.disabled = true;
+  checkButton.textContent = 'Проверяем…';
+  status.textContent = 'Определяем доступные протоколы…';
+  results.hidden = false;
+  setProtocol(4, '', false); setProtocol(6, '', false);
+  $('ipv4').textContent = $('ipv6').textContent = 'Проверяем…';
+
+  const [v4, v6] = await Promise.allSettled([getAddress(4), getAddress(6)]);
+  const ipv4 = v4.status === 'fulfilled' ? v4.value : null;
+  const ipv6 = v6.status === 'fulfilled' ? v6.value : null;
+  setProtocol(4, ipv4, Boolean(ipv4));
+  setProtocol(6, ipv6, Boolean(ipv6));
+  const primary = ipv4 || ipv6;
+
+  if (!primary) {
+    $('primary-ip').textContent = 'Не удалось определить';
+    status.textContent = 'Сервисы проверки недоступны. Попробуйте ещё раз.';
+    checkButton.disabled = false; checkButton.textContent = 'Повторить проверку';
+    return;
+  }
+
+  $('primary-ip').textContent = primary;
+  status.textContent = 'Определяем примерное местоположение…';
+  try {
+    const geo = await fetchJSON(`https://ipwho.is/${encodeURIComponent(primary)}`);
+    if (geo.success === false) throw new Error(geo.message || 'Lookup failed');
+    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Не определено';
+    $('country').textContent = geo.country || '—';
+    $('region').textContent = geo.region || '—';
+    $('city').textContent = geo.city || '—';
+    $('isp').textContent = geo.connection?.isp || '—';
+    $('asn').textContent = geo.connection?.asn ? `AS${geo.connection.asn}` : '—';
+    $('timezone').textContent = geo.timezone?.id || '—';
+    $('flag').textContent = countryFlag(geo.country_code);
+    status.textContent = 'Проверка завершена.';
+  } catch {
+    status.textContent = 'IP определён, но геолокация сейчас недоступна.';
+  }
+  checkButton.disabled = false;
+  checkButton.textContent = 'Проверить ещё раз';
+}
+
+checkButton.addEventListener('click', checkIP);
+document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
+  const value = $(button.dataset.copy).textContent;
+  try { await navigator.clipboard.writeText(value); button.textContent = 'Скопировано'; }
+  catch { button.textContent = 'Не удалось'; }
+  setTimeout(() => { button.textContent = 'Копировать'; }, 1500);
+}));
+
+const preferred = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.documentElement.dataset.theme = preferred;
+$('theme').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next; localStorage.setItem('theme', next);
+});
+$('year').textContent = new Date().getFullYear();

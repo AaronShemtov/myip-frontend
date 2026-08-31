@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Быстрая проверка IPv4, IPv6 и примерного местоположения без рекламы.">
+  <meta name="theme-color" content="#f5f2eb">
+  <title>Мой IP — 1ms.my</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%231c1c1a%22/><text x=%2232%22 y=%2242%22 text-anchor=%22middle%22 font-size=%2232%22 fill=%22white%22>IP</text></svg>">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="https://1ms.my" aria-label="1ms.my">1ms.my</a>
+    <button id="theme" class="icon-button" type="button" aria-label="Переключить тему">◐</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Проверка подключения</p>
+      <h1>Какой у меня IP?</h1>
+      <p class="lead">Ваш публичный адрес и примерное местоположение — быстро, без рекламы и регистрации.</p>
+      <button id="check" class="primary" type="button">Определить мой IP</button>
+      <p id="status" class="status" role="status" aria-live="polite">Нажмите кнопку, чтобы начать проверку.</p>
+    </section>
+
+    <section id="results" class="results" hidden aria-label="Результаты проверки">
+      <article class="ip-card featured">
+        <div><span class="label">Основной адрес</span><strong id="primary-ip" class="primary-ip">—</strong></div>
+        <button class="copy" type="button" data-copy="primary-ip">Копировать</button>
+      </article>
+
+      <div class="protocols">
+        <article class="ip-card">
+          <div><span class="protocol">IPv4</span><strong id="ipv4">Проверяем…</strong><small id="ipv4-state">Подключение</small></div>
+          <button class="copy" type="button" data-copy="ipv4">Копировать</button>
+        </article>
+        <article class="ip-card">
+          <div><span class="protocol">IPv6</span><strong id="ipv6">Проверяем…</strong><small id="ipv6-state">Подключение</small></div>
+          <button class="copy" type="button" data-copy="ipv6">Копировать</button>
+        </article>
+      </div>
+
+      <article class="details-card">
+        <div class="details-heading"><div><span class="label">Примерное местоположение</span><h2 id="location">—</h2></div><span id="flag" class="flag" aria-hidden="true"></span></div>
+        <dl>
+          <div><dt>Страна</dt><dd id="country">—</dd></div>
+          <div><dt>Регион</dt><dd id="region">—</dd></div>
+          <div><dt>Город</dt><dd id="city">—</dd></div>
+          <div><dt>Провайдер</dt><dd id="isp">—</dd></div>
+          <div><dt>ASN</dt><dd id="asn">—</dd></div>
+          <div><dt>Часовой пояс</dt><dd id="timezone">—</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <section class="note">
+      <h2>Что это значит?</h2>
+      <p>IP — публичный адрес вашего подключения в интернете. Геолокация определяется по сетевым справочникам и может отличаться от фактического положения, особенно при использовании VPN, прокси или мобильной сети.</p>
+      <p class="privacy">Запрос выполняется только после нажатия кнопки. Для определения адреса и геолокации используются сервисы ipify и ipwho.is.</p>
+    </section>
+  </main>
+
+  <footer><span>© <span id="year"></span> 1ms.my</span><a href="https://1ms.my">На главную</a></footer>
+</body>
+</html>
