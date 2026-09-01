@@ -3,7 +3,11 @@ const checkButton = $('check');
 const status = $('status');
 const results = $('results');
 
-document.querySelector('.spec-card')?.remove();
+const connectionPanel = document.querySelector('.spec-card');
+if (connectionPanel) {
+  connectionPanel.remove();
+  document.querySelector('.hero-grid').style.gridTemplateColumns = '1fr';
+}
 
 const fetchJSON = async (url, timeout = 7000) => {
   const controller = new AbortController();
