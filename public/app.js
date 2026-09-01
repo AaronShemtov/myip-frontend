@@ -3,6 +3,8 @@ const checkButton = $('check');
 const status = $('status');
 const results = $('results');
 
+document.querySelector('.spec-card')?.remove();
+
 const fetchJSON = async (url, timeout = 7000) => {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -55,7 +57,7 @@ async function checkIP() {
   try {
     const geo = await fetchJSON(`https://ipwho.is/${encodeURIComponent(primary)}`);
     if (geo.success === false) throw new Error(geo.message || 'Lookup failed');
-    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Unknown';
+    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Not available';
     $('country').textContent = geo.country || '—';
     $('region').textContent = geo.region || '—';
     $('city').textContent = geo.city || '—';
