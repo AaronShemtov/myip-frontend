@@ -1,98 +1,46 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Check your public IPv4, IPv6 and approximate location — fast and ad-free.">
-  <meta name="theme-color" content="#f5f4ef">
-  <title>My IP — 1ms.my</title>
-  <link rel="icon" href="https://1ms.my/favicon.ico">
-  <link rel="stylesheet" href="https://1ms.my/blueprint.css">
-  <link rel="stylesheet" href="/style.css">
-  <script src="/app.js" defer></script>
-</head>
-<body>
-  <header class="ribbon">
-    <div class="ribbon-inner">
-      <div class="ribbon-left">
-        <a class="brand" href="https://1ms.my">1ms.my</a>
-        <span class="dot"></span>
-        <span><b>myip</b> · public utility</span>
-      </div>
-      <nav class="ribbon-nav" aria-label="Primary navigation">
-        <a href="https://1ms.my">shortener</a>
-        <a class="current" href="/">my ip</a>
-        <button id="theme" class="theme-btn" type="button" aria-label="Toggle theme">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyIP — 1ms.my</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main>
+      <section class="card" aria-live="polite">
+        <h1>Ваш IP</h1>
+        <p class="muted">Информация о текущем подключении</p>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="crumbs"><a href="https://1ms.my">1ms.my</a><span class="sep">/</span>my ip</div>
-      <div class="hero-grid">
-        <div class="title-block">
-          <h1 class="title"><span class="lt">/</span>my ip</h1>
-          <div class="title-tag">check your public address<span class="blink"></span></div>
-          <p class="lede">See the public <strong>IPv4</strong> and <strong>IPv6</strong> addresses used by this connection, plus an approximate network location.</p>
-          <div class="tag-row">
-            <span class="tag-pill">no ads</span>
-            <span class="tag-pill">no account</span>
-            <span class="tag-pill">no storage</span>
-          </div>
-          <button id="check" class="myip-action" type="button">Check my IP</button>
-          <p id="status" class="myip-status" role="status" aria-live="polite">Ready.</p>
+        <div class="row">
+          <div class="label">IP адрес</div>
+          <div class="value" id="ip">—</div>
         </div>
 
-        <aside class="spec-card">
-          <header><span>connection check</span><span class="live-mark">live</span></header>
-          <dl>
-            <dt>host</dt><dd><b>myip.1ms.my</b></dd>
-            <dt>access</dt><dd>public</dd>
-            <dt>auth</dt><dd>none</dd>
-            <div class="divider"></div>
-            <dt>protocols</dt><dd>IPv4 / IPv6</dd>
-            <dt>location</dt><dd>approximate</dd>
-            <dt>storage</dt><dd>none</dd>
-          </dl>
-        </aside>
-      </div>
-    </section>
+        <div class="row">
+          <div class="label">Страна</div>
+          <div class="value" id="country">—</div>
+        </div>
 
-    <section id="results" class="myip-results" hidden aria-label="Connection results">
-      <div class="kpi-heading"><span class="kpi-title">connection result</span><span class="kpi-rule"></span></div>
+        <div class="row">
+          <div class="label">Город</div>
+          <div class="value" id="city">—</div>
+        </div>
 
-      <article class="myip-primary">
-        <span class="myip-label">PUBLIC IP</span>
-        <div class="myip-primary-row"><strong id="primary-ip">—</strong><button class="myip-copy" type="button" data-copy="primary-ip">copy</button></div>
-      </article>
+        <div class="row">
+          <div class="label">Провайдер</div>
+          <div class="value" id="isp">—</div>
+        </div>
 
-      <div class="myip-protocols">
-        <article class="myip-card"><span class="myip-label">IPv4</span><strong id="ipv4">Checking…</strong><span id="ipv4-state" class="myip-state">connecting</span><button class="myip-copy" type="button" data-copy="ipv4">copy</button></article>
-        <article class="myip-card"><span class="myip-label">IPv6</span><strong id="ipv6">Checking…</strong><span id="ipv6-state" class="myip-state">connecting</span><button class="myip-copy" type="button" data-copy="ipv6">copy</button></article>
-      </div>
+        <div class="actions">
+          <button id="refreshBtn" type="button">Обновить</button>
+          <button id="copyBtn" type="button">Скопировать IP</button>
+        </div>
 
-      <div class="kpi-heading"><span class="kpi-title">approximate location</span><span class="kpi-rule"></span></div>
-      <article class="myip-location">
-        <div class="myip-place"><h2 id="location">—</h2><span id="flag" aria-hidden="true"></span></div>
-        <dl>
-          <div><dt>country</dt><dd id="country">—</dd></div>
-          <div><dt>region</dt><dd id="region">—</dd></div>
-          <div><dt>city</dt><dd id="city">—</dd></div>
-          <div><dt>provider</dt><dd id="isp">—</dd></div>
-          <div><dt>asn</dt><dd id="asn">—</dd></div>
-          <div><dt>time zone</dt><dd id="timezone">—</dd></div>
-        </dl>
-      </article>
-    </section>
+        <div class="small" id="status">Готово</div>
+      </section>
+    </main>
 
-    <section class="myip-about">
-      <div class="kpi-heading"><span class="kpi-title">about this result</span><span class="kpi-rule"></span></div>
-      <p>IP geolocation is based on network databases and may differ from your actual position, especially when using a VPN, proxy, or mobile network.</p>
-      <p class="myip-note">The check runs only when requested. Data is provided by ipify and ipwho.is. This site stores nothing.</p>
-    </section>
-  </main>
-</body>
+    <script src="/app.js" defer></script>
+  </body>
 </html>
