@@ -57,7 +57,7 @@ async function checkIP() {
   try {
     const geo = await fetchJSON(`https://ipwho.is/${encodeURIComponent(primary)}`);
     if (geo.success === false) throw new Error(geo.message || 'Lookup failed');
-    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Not available';
+    $('location').textContent = [geo.city, geo.country].filter(Boolean).join(', ') || 'Unknown';
     $('country').textContent = geo.country || '—';
     $('region').textContent = geo.region || '—';
     $('city').textContent = geo.city || '—';
