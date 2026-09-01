@@ -1,98 +1,98 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>What Is My IP — Fast IP & DNS Leak Check</title>
-  <meta name="description" content="See your public IPv4/IPv6 instantly and run a fast DNS leak test against your active resolver." />
-  <meta name="robots" content="index,follow" />
-  <meta name="theme-color" content="#0f172a" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="What Is My IP — Fast IP & DNS Leak Check" />
-  <meta property="og:description" content="Check your public IP and detect DNS leaks in seconds." />
-  <meta property="og:image" content="/og-preview.png" />
-  <meta property="og:url" content="https://myip.1ms.my/" />
-
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Check your public IPv4, IPv6 and approximate location — fast and ad-free.">
+  <meta name="theme-color" content="#f5f4ef">
+  <title>My IP — 1ms.my</title>
+  <link rel="icon" href="https://1ms.my/favicon.ico">
+  <link rel="stylesheet" href="https://1ms.my/blueprint.css">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
 </head>
 <body>
-  <header class="topbar" role="banner">
-    <div class="brand">myip.1ms.my</div>
-    <button id="themeToggle" class="ghost small" type="button" aria-label="Toggle theme">Theme</button>
+  <header class="ribbon">
+    <div class="ribbon-inner">
+      <div class="ribbon-left">
+        <a class="brand" href="https://1ms.my">1ms.my</a>
+        <span class="dot"></span>
+        <span><b>myip</b> · public utility</span>
+      </div>
+      <nav class="ribbon-nav" aria-label="Primary navigation">
+        <a href="https://1ms.my">shortener</a>
+        <a class="current" href="/">my ip</a>
+        <button id="theme" class="theme-btn" type="button" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </nav>
+    </div>
   </header>
 
-  <main class="container" role="main">
-    <section class="hero card" aria-labelledby="heroTitle">
-      <h1 id="heroTitle">What Is My IP</h1>
-      <p class="sub">See your public network fingerprint and test whether your DNS requests leak outside your VPN.</p>
-
+  <main class="wrap">
+    <section class="hero">
+      <div class="crumbs"><a href="https://1ms.my">1ms.my</a><span class="sep">/</span>my ip</div>
       <div class="hero-grid">
-        <article class="ip-card" aria-live="polite">
-          <h2>Your Public IP</h2>
-          <div id="ipDisplay" class="ip">—</div>
-          <dl class="meta">
-            <div><dt>Version</dt><dd id="ipVersion">—</dd></div>
-            <div><dt>Country</dt><dd id="ipCountry">—</dd></div>
-            <div><dt>ASN</dt><dd id="ipAsn">—</dd></div>
-          </dl>
-        </article>
-
-        <article class="spec-card">
-          <h2>How leak test works</h2>
-          <ul>
-            <li>We generate random hostnames under our test zone.</li>
-            <li>Your resolver asks authoritative DNS for each one.</li>
-            <li>We compare resolver IPs and location with your public IP.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="tools card" aria-labelledby="toolsTitle">
-      <div class="tools-head">
-        <h2 id="toolsTitle">DNS Leak Test</h2>
-        <button id="checkBtn" class="primary" type="button">Run Test</button>
-      </div>
-
-      <div id="status" class="status" role="status" aria-live="polite">Idle</div>
-
-      <div id="results" class="results" hidden>
-        <h3>Resolvers Observed</h3>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Resolver IP</th>
-                <th>ASN</th>
-                <th>Country</th>
-                <th>City</th>
-                <th>Network</th>
-              </tr>
-            </thead>
-            <tbody id="dnsRows"></tbody>
-          </table>
+        <div class="title-block">
+          <h1 class="title"><span class="lt">/</span>my ip</h1>
+          <div class="title-tag">check your public address<span class="blink"></span></div>
+          <p class="lede">See the public <strong>IPv4</strong> and <strong>IPv6</strong> addresses used by this connection, plus an approximate network location.</p>
+          <div class="tag-row">
+            <span class="tag-pill">no ads</span>
+            <span class="tag-pill">no account</span>
+            <span class="tag-pill">no storage</span>
+          </div>
+          <button id="check" class="myip-action" type="button">Check my IP</button>
+          <p id="status" class="myip-status" role="status" aria-live="polite">Ready.</p>
         </div>
-        <p id="verdict" class="verdict"></p>
+
+        <aside class="spec-card">
+          <header><span>connection check</span><span class="live-mark">live</span></header>
+          <dl>
+            <dt>host</dt><dd><b>myip.1ms.my</b></dd>
+            <dt>access</dt><dd>public</dd>
+            <dt>auth</dt><dd>none</dd>
+            <div class="divider"></div>
+            <dt>protocols</dt><dd>IPv4 / IPv6</dd>
+            <dt>location</dt><dd>approximate</dd>
+            <dt>storage</dt><dd>none</dd>
+          </dl>
+        </aside>
       </div>
     </section>
 
-    <section class="faq card" aria-labelledby="faqTitle">
-      <h2 id="faqTitle">FAQ</h2>
-      <details>
-        <summary>What is a DNS leak?</summary>
-        <p>A DNS leak happens when your device sends DNS queries to a resolver outside your intended secure tunnel.</p>
-      </details>
-      <details>
-        <summary>Does this store my data?</summary>
-        <p>No personal profile is stored. Test records are short-lived and used only to compute your result.</p>
-      </details>
+    <section id="results" class="myip-results" hidden aria-label="Connection results">
+      <div class="kpi-heading"><span class="kpi-title">connection result</span><span class="kpi-rule"></span></div>
+
+      <article class="myip-primary">
+        <span class="myip-label">PUBLIC IP</span>
+        <div class="myip-primary-row"><strong id="primary-ip">—</strong><button class="myip-copy" type="button" data-copy="primary-ip">copy</button></div>
+      </article>
+
+      <div class="myip-protocols">
+        <article class="myip-card"><span class="myip-label">IPv4</span><strong id="ipv4">Checking…</strong><span id="ipv4-state" class="myip-state">connecting</span><button class="myip-copy" type="button" data-copy="ipv4">copy</button></article>
+        <article class="myip-card"><span class="myip-label">IPv6</span><strong id="ipv6">Checking…</strong><span id="ipv6-state" class="myip-state">connecting</span><button class="myip-copy" type="button" data-copy="ipv6">copy</button></article>
+      </div>
+
+      <div class="kpi-heading"><span class="kpi-title">approximate location</span><span class="kpi-rule"></span></div>
+      <article class="myip-location">
+        <div class="myip-place"><h2 id="location">—</h2><span id="flag" aria-hidden="true"></span></div>
+        <dl>
+          <div><dt>country</dt><dd id="country">—</dd></div>
+          <div><dt>region</dt><dd id="region">—</dd></div>
+          <div><dt>city</dt><dd id="city">—</dd></div>
+          <div><dt>provider</dt><dd id="isp">—</dd></div>
+          <div><dt>asn</dt><dd id="asn">—</dd></div>
+          <div><dt>time zone</dt><dd id="timezone">—</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <section class="myip-about">
+      <div class="kpi-heading"><span class="kpi-title">about this result</span><span class="kpi-rule"></span></div>
+      <p>IP geolocation is based on network databases and may differ from your actual position, especially when using a VPN, proxy, or mobile network.</p>
+      <p class="myip-note">The check runs only when requested. Data is provided by ipify and ipwho.is. This site stores nothing.</p>
     </section>
   </main>
-
-  <footer class="footer">© 2026 1ms.my</footer>
-
-  <script defer src="/app.js"></script>
 </body>
 </html>
