@@ -1,135 +1,268 @@
-/* Общий фон страницы */
-html, body {
+:root {
+  color-scheme: light dark;
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --line: #dbe2ea;
+  --accent: #2563eb;
+  --accent-2: #1d4ed8;
+  --ok: #166534;
+  --warn: #92400e;
+  --bad: #b91c1c;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --radius: 16px;
+  --grid-line: rgba(30, 64, 175, 0.08);
+}
+
+html[data-theme='dark'] {
+  --bg: #0b1220;
+  --card: #0f172a;
+  --text: #e5e7eb;
+  --muted: #9aa5b1;
+  --line: #1f2937;
+  --accent: #60a5fa;
+  --accent-2: #3b82f6;
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --bad: #f87171;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --grid-line: rgba(122, 162, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
-  width: 100%;
-  min-height: 100%;
-  background: #f4f6fb;
-  color: #101828;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  overflow-x: hidden;
+  padding: 0;
 }
 
 body {
-  position: relative;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* Фоновый декоративный слой, как на 1ms.my */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.container {
+  width: min(1100px, 92vw);
+  margin: 24px auto 56px;
+  display: grid;
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.hero h1 {
+  margin: 0 0 4px;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+}
+
+.sub {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 14px;
+}
+
+.ip-card h2,
+.spec-card h2,
+.tools h2,
+.faq h2 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+}
+
+.ip {
+  font-size: clamp(1.2rem, 2.7vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.meta {
+  margin: 10px 0 0;
+  display: grid;
+  gap: 6px;
+}
+
+.meta div {
+  display: flex;
+  gap: 10px;
+  border-top: 1px dashed var(--line);
+  padding-top: 6px;
+}
+
+.meta dt {
+  min-width: 72px;
+  color: var(--muted);
+}
+
+.spec-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.tools-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+}
+
+button.primary {
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color: white;
+  border-color: transparent;
+}
+
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.small {
+  padding: 7px 10px;
+  border-radius: 10px;
+}
+
+.status {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.status[data-state='ok'] {
+  color: var(--ok);
+  border-style: solid;
+}
+
+.status[data-state='warn'] {
+  color: var(--warn);
+  border-style: solid;
+}
+
+.status[data-state='bad'] {
+  color: var(--bad);
+  border-style: solid;
+}
+
+.results {
+  margin-top: 14px;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.verdict {
+  margin: 10px 0 0;
+  font-weight: 600;
+}
+
+details {
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}
+
+details + details {
+  margin-top: 8px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+}
+
+@media (max-width: 880px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* keep original comment */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-
-  background-color: #f4f6fb;
-  background-image:
-    linear-gradient(90deg, rgba(16, 24, 40, 0.06) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(16, 24, 40, 0.06) 1px, transparent 1px),
-    radial-gradient(800px 420px at 16% -12%, rgba(99, 102, 241, 0.18), transparent 70%),
-    radial-gradient(900px 460px at 100% 118%, rgba(56, 189, 248, 0.16), transparent 72%),
-    linear-gradient(180deg, #f8fbff 0%, #f3f6fb 52%, #edf2f8 100%);
-  background-size:
-    48px 48px,
-    48px 48px,
-    auto,
-    auto,
-    auto;
-  background-position:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0;
-}
-
-/* Центрируем контент */
-main {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-/* Карточка */
-.card {
-  width: 100%;
-  max-width: 720px;
-  background: #fff;
-  border: 1px solid #e6e8ef;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08);
-  padding: 22px;
-}
-
-h1 {
-  margin: 0 0 10px;
-  font-size: 28px;
-  line-height: 1.2;
-}
-
-p.muted {
-  margin: 0 0 16px;
-  color: #667085;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 8px 14px;
-  margin: 12px 0;
-  align-items: baseline;
-}
-
-.label {
-  color: #475467;
-  font-weight: 600;
-}
-
-.value {
-  color: #101828;
-  word-break: break-word;
-}
-
-.actions {
-  margin-top: 16px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-button, .btn {
-  border: 1px solid #d0d5dd;
-  background: #fff;
-  color: #101828;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-button:hover, .btn:hover {
-  background: #f8f9fc;
-}
-
-.small {
-  font-size: 12px;
-  color: #667085;
-  margin-top: 12px;
-}
-
-@media (max-width: 640px) {
-  .card {
-    padding: 16px;
-    border-radius: 14px;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  .row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
+  background:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

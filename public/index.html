@@ -1,46 +1,98 @@
 <!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyIP — 1ms.my</title>
-    <link rel="stylesheet" href="/style.css" />
-  </head>
-  <body>
-    <main>
-      <section class="card" aria-live="polite">
-        <h1>Ваш IP</h1>
-        <p class="muted">Информация о текущем подключении</p>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What Is My IP — Fast IP & DNS Leak Check</title>
+  <meta name="description" content="See your public IPv4/IPv6 instantly and run a fast DNS leak test against your active resolver." />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0f172a" />
 
-        <div class="row">
-          <div class="label">IP адрес</div>
-          <div class="value" id="ip">—</div>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="What Is My IP — Fast IP & DNS Leak Check" />
+  <meta property="og:description" content="Check your public IP and detect DNS leaks in seconds." />
+  <meta property="og:image" content="/og-preview.png" />
+  <meta property="og:url" content="https://myip.1ms.my/" />
+
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">myip.1ms.my</div>
+    <button id="themeToggle" class="ghost small" type="button" aria-label="Toggle theme">Theme</button>
+  </header>
+
+  <main class="container" role="main">
+    <section class="hero card" aria-labelledby="heroTitle">
+      <h1 id="heroTitle">What Is My IP</h1>
+      <p class="sub">See your public network fingerprint and test whether your DNS requests leak outside your VPN.</p>
+
+      <div class="hero-grid">
+        <article class="ip-card" aria-live="polite">
+          <h2>Your Public IP</h2>
+          <div id="ipDisplay" class="ip">—</div>
+          <dl class="meta">
+            <div><dt>Version</dt><dd id="ipVersion">—</dd></div>
+            <div><dt>Country</dt><dd id="ipCountry">—</dd></div>
+            <div><dt>ASN</dt><dd id="ipAsn">—</dd></div>
+          </dl>
+        </article>
+
+        <article class="spec-card">
+          <h2>How leak test works</h2>
+          <ul>
+            <li>We generate random hostnames under our test zone.</li>
+            <li>Your resolver asks authoritative DNS for each one.</li>
+            <li>We compare resolver IPs and location with your public IP.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="tools card" aria-labelledby="toolsTitle">
+      <div class="tools-head">
+        <h2 id="toolsTitle">DNS Leak Test</h2>
+        <button id="checkBtn" class="primary" type="button">Run Test</button>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite">Idle</div>
+
+      <div id="results" class="results" hidden>
+        <h3>Resolvers Observed</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Resolver IP</th>
+                <th>ASN</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Network</th>
+              </tr>
+            </thead>
+            <tbody id="dnsRows"></tbody>
+          </table>
         </div>
+        <p id="verdict" class="verdict"></p>
+      </div>
+    </section>
 
-        <div class="row">
-          <div class="label">Страна</div>
-          <div class="value" id="country">—</div>
-        </div>
+    <section class="faq card" aria-labelledby="faqTitle">
+      <h2 id="faqTitle">FAQ</h2>
+      <details>
+        <summary>What is a DNS leak?</summary>
+        <p>A DNS leak happens when your device sends DNS queries to a resolver outside your intended secure tunnel.</p>
+      </details>
+      <details>
+        <summary>Does this store my data?</summary>
+        <p>No personal profile is stored. Test records are short-lived and used only to compute your result.</p>
+      </details>
+    </section>
+  </main>
 
-        <div class="row">
-          <div class="label">Город</div>
-          <div class="value" id="city">—</div>
-        </div>
+  <footer class="footer">© 2026 1ms.my</footer>
 
-        <div class="row">
-          <div class="label">Провайдер</div>
-          <div class="value" id="isp">—</div>
-        </div>
-
-        <div class="actions">
-          <button id="refreshBtn" type="button">Обновить</button>
-          <button id="copyBtn" type="button">Скопировать IP</button>
-        </div>
-
-        <div class="small" id="status">Готово</div>
-      </section>
-    </main>
-
-    <script src="/app.js" defer></script>
-  </body>
+  <script defer src="/app.js"></script>
+</body>
 </html>
