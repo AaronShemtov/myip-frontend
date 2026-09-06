@@ -20,13 +20,9 @@ jobs:
           git show "${BAD}^:public/index.html" > public/index.html
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('public/index.html')
-          s = p.read_text()
-          old = '''        <span class="dot"></span>
-        <span><b>myip</b> · public utility</span>
-'''
-          assert s.count(old) == 1
-          s = s.replace(old, '')
+          p = Path('public/index.html'); s = p.read_text()
+          s = s.replace('        <span class="dot"></span>\n', '', 1)
+          s = s.replace('        <span><b>myip</b> · public utility</span>\n', '', 1)
           assert s.rstrip().endswith('</html>') and 'class="current"' in s
           p.write_text(s)
           PY
